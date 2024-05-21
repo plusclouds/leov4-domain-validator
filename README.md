@@ -6,51 +6,27 @@ This project has its own simple database and the aim of this database is to stor
 ## Endpoint
 These endpoints will be used to check if the domain is valid or not;
 
-### Get validation methods
+### Get validation key
 ```
-URL: GET https://api4.plusclouds.com/dvs/validation-methods
+URL: GET https://api4.plusclouds.com/dvs/validation-key?domain=niyel.com.tr
+params;
+- domain
 
 Response;
 [
   {
-    "name": "Validation with HTTP",
-    "description":"....",
-    "value":"http"
+    "key": "........................."
   }
 ]
 ```
 
-### Add domain to database
+### Check validation
 ```
-URL: POST https://api4.plusclouds.com/dvs/domain
-header;
-- Authorization: {token}
+URL: GET https://api4.plusclouds.com/dvs/domain
 params;
-- domain_id
-- validation_method
+- domain: Domain name of the website like; niyel.com.tr
+- method: http|dns(cname)
 
 Reponse;
-- validation_token: UUID token
-```
-
-### Validate domain
-```
-URL: GET https://apiv4.plusclouds.com/dvs/domain/:domain_id
-- Authorization: {token}
-
-Response:
-[
-  {
-    "is_valid": "true"
-  }
-]
-
-OR
-
-[
-  {
-    "is_valid": "false",
-    "reason":"...."
-  }
-]
+- is_valid: true|false
 ```
