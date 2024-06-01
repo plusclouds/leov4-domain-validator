@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ValidationDomain;
+namespace App\Http\Requests;
 
 use App\Http\Requests\AbstractFormRequest;
 
-class ValidationDomainRequest extends AbstractFormRequest
+class DomainRequest extends AbstractFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,7 @@ class ValidationDomainRequest extends AbstractFormRequest
     {
         return [
             "domain" => "required|url",
-            "method" => "required|in:dns,http",
+            "method" => "in:dns,http",
         ];
     }
 }

@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Helpers\ValidationDomain;
+namespace App\Http\Services;
 
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
 
-class ValidationDomainHelper
+class DomainService
 {
-    /* 
-    This function compares given token with date of the today and check if difference is bigger than default expiration limit
-    */
-    private static function isTokenValid($token)
+    /**
+     * This function compares given token with date of the today and check if difference is bigger than default expiration limit
+     *
+     * @param array $token
+     * @return bool
+     */
+    private static function isTokenValid(array $token): bool
     {
         $createdAt = new Carbon($token['createdAt']);
         $timeElapsed = $createdAt->diffInSeconds(Carbon::now());
@@ -19,10 +22,13 @@ class ValidationDomainHelper
         return $timeElapsed < $tokenExpirationLimit;
     }
 
-    /* 
-    This function iterates over all the dns records of the domain that type TXT and if it finds token, it sends token to isValidToken function and returns the result
-    */
-    public static function checkDns(String $domain)
+    /**
+     * This function iterates over all the dns records of the domain that type TXT and if it finds token, it sends token to isValidToken function and returns the result
+     *
+     * @param string $domain
+     * @return bool
+     */
+    public static function checkDns(String $domain): bool
     {
         // dns_get_record function creates problem if it see www. or https://
         $newDomain = str_replace(["https://", "www."], "", $domain);
@@ -39,10 +45,13 @@ class ValidationDomainHelper
         return false;
     }
 
-    /* 
-    This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
-    */
-    public static function checkHttp(String $domain)
+    /**
+     * This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
+     *
+     * @param string $domain
+     * @return bool
+     */
+    public static function checkHttp(String $domain): bool
     {
         $filePath = env("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
         $url = $domain . $filePath;

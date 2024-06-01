@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ValidationKey\ValidationKeyController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ValidationDomain\ValidationDomainController;
+use App\Http\Controllers\DomainController;
 
 Route::get('/validation-key', [ValidationKeyController::class, 'create']);
-Route::get("/domain", [ValidationDomainController::class, "checkValidation"]);
+Route::get("/domain", [DomainController::class, "checkValidation"]);
