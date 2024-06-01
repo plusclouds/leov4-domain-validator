@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ValidationKey;
+namespace App\Http\Requests;
 
 use App\Http\Requests\AbstractFormRequest;
-class ValidationKeyCreateRequest extends AbstractFormRequest
+
+class KeyRequest extends AbstractFormRequest
 {
 
     /**

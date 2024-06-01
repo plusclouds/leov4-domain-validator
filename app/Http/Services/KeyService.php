@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Helpers\ValidationKey;
+namespace App\Http\Services;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Carbon\Carbon;
 
 /**
- * Class ValidationKeyHelper
+ * Class KeyService
  */
-class ValidationKeyHelper   {
+class KeyService
+{
 
     /**
      * This function generates a validation key by encrypting an array including the domain and the creation date/time
@@ -17,11 +18,11 @@ class ValidationKeyHelper   {
      * @param Carbon $createdAt
      * @return string
      */
-    public static function generateKey(String $domain, Carbon $createdAt) : string {
+    public static function generateKey(String $domain): string
+    {
         return Crypt::encrypt([
             'domain' => $domain,
-            'createdAt' => $createdAt
+            'createdAt' => Carbon::now()
         ]);
     }
-
 }

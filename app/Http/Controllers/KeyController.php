@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\ValidationKey;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller as Controller;
-use App\Http\Helpers\ValidationKey\ValidationKeyHelper;
-use App\Http\Requests\ValidationKey\ValidationKeyCreateRequest;
-use Carbon\Carbon;
+use App\Http\Services\KeyService;
+use App\Http\Requests\KeyRequest;
 
-class ValidationKeyController extends Controller
+class KeyController extends Controller
 {
     /**
      * This function generates a validation key by encrypting an array including the domain and the creation date/time and returns it.
@@ -18,14 +17,11 @@ class ValidationKeyController extends Controller
      * @param ValidationKeyCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(ValidationKeyCreateRequest $request){
-        $domain = $request->input('domain');
-
-        $key = ValidationKeyHelper::generateKey($domain, Carbon::now());
-
+    public function create(KeyRequest $request)
+    {
         return response()->json([
             [
-            'key' => $key
+                'key' => KeyService::generateKey($request->validated()['domain'])
             ]
         ]);
     }
