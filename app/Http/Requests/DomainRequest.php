@@ -14,8 +14,7 @@ class DomainRequest extends AbstractFormRequest
     public function rules(): array
     {
         return [
-            "domain" => "required|url",
-            "method" => "in:dns,http",
+            "domain" => "required|url"
         ];
     }
 }

@@ -34,6 +34,7 @@ class DomainService
         $newDomain = str_replace(["https://", "www."], "", $domain);
 
         $dns_records = dns_get_record($newDomain, DNS_TXT);
+
         foreach ($dns_records as $record) {
             $txtValue = $record["txt"];
             try {
@@ -62,5 +63,10 @@ class DomainService
         } catch (Exception $e) {
         }
         return false;
+    }
+
+    public static function validateDomain(String $domain): bool
+    {
+        return static::checkDns($domain) ? true : static::checkHttp($domain);
     }
 }

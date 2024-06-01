@@ -17,12 +17,10 @@ class KeyController extends Controller
      * @param ValidationKeyCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(KeyRequest $request)
+    public function store(KeyRequest $request)
     {
         return response()->json([
-            [
-                'key' => KeyService::generateKey($request->validated()['domain'])
-            ]
+            'key' => KeyService::generateKey($request->validated()['domain'])
         ]);
     }
 }

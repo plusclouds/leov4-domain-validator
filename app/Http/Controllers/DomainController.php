@@ -17,13 +17,8 @@ class DomainController extends Controller
      */
     public function checkValidation(DomainRequest $request)
     {
-        $isDomainValid = DomainService::checkHttp($request->validated()["domain"]);
-        if (!$isDomainValid) {
-            $isDomainValid = DomainService::checkDns($request->validated()["domain"]);
-        }
-
         return response()->json([
-            "is_valid" => $isDomainValid
+            "is_valid" => DomainService::validateDomain($request->validated()['domain'])
         ]);
     }
 }

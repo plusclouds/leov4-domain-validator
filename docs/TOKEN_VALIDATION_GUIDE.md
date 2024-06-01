@@ -5,9 +5,9 @@ validationToken structure:
 - createdAt
 
 - Encryption library of laravel will be used to encrypt/decrypt the tokens. ([https://laravel.com/docs/11.x/encryption](https://laravel.com/docs/11.x/encryption))
-## Token Validation
 
-When the domain and validation method are passed to the service:
+## Token Validation
+When the domain is passed to the service both validation methods are checked:
 1. DNS(CNAME)
 - **dns_get_record** function will be used to retrieve only **TXT** records from the domain, which will then be passed to the **ValidateToken** function.
 - Based on the return from **ValidateToken** function, the user will get the corresponding response
@@ -15,6 +15,7 @@ When the domain and validation method are passed to the service:
 - **file_get_contents** function will be used to retrieve the corresponding **validate.txt** file content from the provided domain + requested file path (domain + "/.well-known/validate.txt").
 - Then, the contents will be passed to the **ValidateToken** function.
 - Based on the return from the **ValidateToken** function, the user will get the corresponding response
+
 ### ValidateToken(domain, token): bool
 - The retrieved token will be decrypted to access to the payload.
 - If the payload is invalid/token missing, return false
