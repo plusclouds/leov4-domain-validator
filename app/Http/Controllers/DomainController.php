@@ -8,11 +8,10 @@ use App\Http\Requests\DomainRequest;
 
 class DomainController extends Controller
 {
-
     /**
-     * This function sends given domain to related services and returns if the domain is valid or not
+     * This method is used to check if the domain is valid or not.
      *
-     * @param  DomainRequest $request
+     * @param DomainRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function checkValidation(DomainRequest $request)

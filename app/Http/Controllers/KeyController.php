@@ -9,12 +9,10 @@ use App\Http\Requests\KeyRequest;
 class KeyController extends Controller
 {
     /**
-     * This function generates a validation key by encrypting an array including the domain and the creation date/time and returns it.
      *
-     * HTTP Params:
-     * - domain: string (url format)
+     * This method is used to generate a key for the domain.
      *
-     * @param ValidationKeyCreateRequest $request
+     * @param KeyRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(KeyRequest $request)
