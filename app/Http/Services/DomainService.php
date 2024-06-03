@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 
 class DomainService
 {
+
     /**
      * This function compares given token with date of the today and check if difference is bigger than default expiration limit
      *
@@ -22,10 +23,11 @@ class DomainService
         return $timeElapsed < $tokenExpirationLimit;
     }
 
+
     /**
      * This function iterates over all the dns records of the domain that type TXT and if it finds token, it sends token to isValidToken function and returns the result
      *
-     * @param string $domain
+     * @param String $domain
      * @return bool
      */
     public static function checkDns(String $domain): bool
@@ -49,7 +51,7 @@ class DomainService
     /**
      * This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
      *
-     * @param string $domain
+     * @param String $domain
      * @return bool
      */
     public static function checkHttp(String $domain): bool
@@ -65,8 +67,14 @@ class DomainService
         return false;
     }
 
+    /**
+     * This function checks if the domain is valid or not by checking dns records and http file
+     *
+     * @param String $domain
+     * @return bool
+     */
     public static function validateDomain(String $domain): bool
     {
-        return static::checkDns($domain) ? true : static::checkHttp($domain);
+        return static::checkDns($domain) || static::checkHttp($domain);
     }
 }

@@ -10,13 +10,12 @@ use NextDeveloper\Commons\Common\Enums\GenericErrorCodes;
 
 abstract class AbstractFormRequest extends FormRequest
 {
-
     /**
      * This function overrides failedValidation method inside FormRequest class which is called when validation fails.
      * Purpose of this override is to customize the response when validation fails.
      *
      * @param Validator $validator
-     * @return void
+     * @return mixed
      */
     protected function failedValidation(Validator $validator)
     {
