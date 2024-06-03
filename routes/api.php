@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\ValidationKey\ValidationKeyController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KeyController;
+use App\Http\Controllers\DomainController;
 
-Route::get('/validation-key', [ValidationKeyController::class, 'create']);
-
-
-
+Route::post('/domain', [KeyController::class, 'store']);
+Route::get('/domain', [DomainController::class, 'checkValidation']);

@@ -8,16 +8,14 @@ These endpoints will be used to check if the domain is valid or not;
 
 ### Get validation key
 ```
-URL: GET https://api4.plusclouds.com/dvs/validation-key?domain=niyel.com.tr
+URL: POST https://api4.plusclouds.com/dvs/domain
 params;
 - domain
 
 Response;
-[
-  {
-    "key": "........................."
-  }
-]
+{
+  "key": "........................."
+}
 ```
 
 ### Check validation
@@ -25,7 +23,6 @@ Response;
 URL: GET https://api4.plusclouds.com/dvs/domain
 params;
 - domain: Domain name of the website like; niyel.com.tr
-- method: http|dns(cname)
 
 Reponse;
 - is_valid: true|false
