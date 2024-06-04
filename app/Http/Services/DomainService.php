@@ -41,7 +41,7 @@ class DomainService
             $txtValue = $record["txt"];
             try {
                 $decryptToken = Crypt::decrypt($txtValue);
-                return static::isTokenValid($decryptToken);
+                if (static::isTokenValid($decryptToken)) return true;
             } catch (Exception $e) {
             }
         }
