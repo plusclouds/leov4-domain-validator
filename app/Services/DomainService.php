@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use Carbon\Carbon;
 use Exception;
@@ -19,7 +19,7 @@ class DomainService
     {
         $createdAt = new Carbon($token['createdAt']);
         $timeElapsed = $createdAt->diffInSeconds(Carbon::now());
-        $tokenExpirationLimit = env("TOKEN_EXPIRATION", "86400");
+        $tokenExpirationLimit = config("TOKEN_EXPIRATION", "86400");
         return $timeElapsed < $tokenExpirationLimit;
     }
 
@@ -56,7 +56,7 @@ class DomainService
      */
     public static function checkHttp(String $domain): bool
     {
-        $filePath = env("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
+        $filePath = config("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
         $url = $domain . $filePath;
         try {
             $token = file_get_contents($url);
