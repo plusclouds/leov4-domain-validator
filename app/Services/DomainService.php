@@ -60,23 +60,26 @@ class DomainService
      * @param String $domain
      * @return bool
      */
-    public static function checkHttp(String $domain): bool
+    public static function checkHttp(String $domain, $token = null): bool
     {
-        $filePath = config("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
-        $url = $domain . $filePath;
-        $token = file_get_contents($url);
+        if ($token == null) {
+            $filePath = config("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
+            $url = $domain . $filePath;
+            $token = file_get_contents($url);
+        }
+
         return static::isTokenValid($domain, $token);
     }
 
     /**
-     * Validates the domain by checking the token directly, or by checking the DNS TXT records and the validation file on the server.
+     * Validates the domain by checking the DNS TXT records and the validation file on the server.
      *
      * @param String $domain
      * @param mix $token
      * @return bool
      */
-    public static function validateDomain(String $domain, $token): bool
+    public static function validateDomain(String $domain): bool
     {
-        return static::isTokenValid($domain, $token) || static::checkDns($domain) || static::checkHttp($domain);
+        return static::checkDns($domain) || static::checkHttp($domain);
     }
 }
