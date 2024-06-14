@@ -13,11 +13,10 @@ class DomainService
      * Verifies if the provided token is still valid by comparing its creation time with the current time.
      * The token must belong to the given domain.
      *
-     * @param String $domain
-     * @param mix $token
+     * @param $token
      * @return bool
      */
-    private static function isTokenValid(String $domain, $token): bool
+    private static function isTokenValid($token): bool
     {
         if ($token == null) return false;
 
@@ -30,7 +29,7 @@ class DomainService
         $createdAt = new Carbon($decryptedToken['createdAt']);
         $timeElapsed = $createdAt->diffInSeconds(Carbon::now());
         $tokenExpirationLimit = config("TOKEN_EXPIRATION", "86400");
-        return $domain == $decryptedToken['domain'] && $timeElapsed < $tokenExpirationLimit;
+        return $timeElapsed < $tokenExpirationLimit;
     }
 
 
@@ -49,7 +48,7 @@ class DomainService
 
         foreach ($dns_records as $record) {
             $txtValue = $record["txt"];
-            if (static::isTokenValid($domain, $txtValue)) return true;
+            if (static::isTokenValid($txtValue)) return true;
         }
         return false;
     }
@@ -58,6 +57,7 @@ class DomainService
      * This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
      *
      * @param String $domain
+     * @param $token
      * @return bool
      */
     public static function checkHttp(String $domain, $token = null): bool
@@ -68,14 +68,13 @@ class DomainService
             $token = file_get_contents($url);
         }
 
-        return static::isTokenValid($domain, $token);
+        return static::isTokenValid($token);
     }
 
     /**
      * Validates the domain by checking the DNS TXT records and the validation file on the server.
      *
      * @param String $domain
-     * @param mix $token
      * @return bool
      */
     public static function validateDomain(String $domain): bool
