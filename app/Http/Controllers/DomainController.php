@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller as Controller;
-use App\Http\Services\DomainService;
 use App\Http\Requests\DomainRequest;
+use App\Services\DomainService;
 
 class DomainController extends Controller
 {

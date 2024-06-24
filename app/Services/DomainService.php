@@ -1,25 +1,36 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class DomainService
 {
 
     /**
-     * This function compares given token with date of the today and check if difference is bigger than default expiration limit
+     * Verifies if the provided token is still valid by comparing its creation time with the current time.
+     * The token must belong to the given domain.
      *
-     * @param array $token
+     * @param $token
      * @return bool
      */
-    private static function isTokenValid(array $token): bool
+    private static function isTokenValid($token): bool
     {
-        $createdAt = new Carbon($token['createdAt']);
+        if ($token == null) return false;
+
+        try {
+            $decryptedToken = Crypt::decrypt($token);
+        } catch (Exception $e) {
+            Log::error('[DV] Error: ' . $e->getMessage());
+            return false;
+        }
+
+        $createdAt = new Carbon($decryptedToken['createdAt']);
         $timeElapsed = $createdAt->diffInSeconds(Carbon::now());
-        $tokenExpirationLimit = env("TOKEN_EXPIRATION", "86400");
+        $tokenExpirationLimit = config('domain.token_expiration');
         return $timeElapsed < $tokenExpirationLimit;
     }
 
@@ -32,18 +43,14 @@ class DomainService
      */
     public static function checkDns(String $domain): bool
     {
-        // dns_get_record function creates problem if it see www. or https://
+        // dns_get_record function creates problem if it sees www. or https://
         $newDomain = str_replace(["https://", "www."], "", $domain);
 
         $dns_records = dns_get_record($newDomain, DNS_TXT);
 
         foreach ($dns_records as $record) {
             $txtValue = $record["txt"];
-            try {
-                $decryptToken = Crypt::decrypt($txtValue);
-                return static::isTokenValid($decryptToken);
-            } catch (Exception $e) {
-            }
+            if (static::isTokenValid($txtValue)) return true;
         }
         return false;
     }
@@ -52,23 +59,22 @@ class DomainService
      * This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
      *
      * @param String $domain
+     * @param $token
      * @return bool
      */
-    public static function checkHttp(String $domain): bool
+    public static function checkHttp(String $domain, $token = null): bool
     {
-        $filePath = env("HTTP_VALIDATION_FILE_PATH", "/.well-known/validation.txt");
-        $url = $domain . $filePath;
-        try {
+        if ($token == null) {
+            $filePath = config('domain.http_validation_file_path');
+            $url = $domain . $filePath;
             $token = file_get_contents($url);
-            $decryptToken = Crypt::decrypt($token);
-            return static::isTokenValid($decryptToken);
-        } catch (Exception $e) {
         }
-        return false;
+
+        return static::isTokenValid($token);
     }
 
     /**
-     * This function checks if the domain is valid or not by checking dns records and http file
+     * Validates the domain by checking the DNS TXT records and the validation file on the server.
      *
      * @param String $domain
      * @return bool
