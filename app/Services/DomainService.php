@@ -36,27 +36,29 @@ class DomainService
 
 
     /**
-     * This function iterates over all the dns records of the domain that type TXT and if it finds token, it sends token to isValidToken function and returns the result
+     * This function iterates over all the dns records of the domain that type TXT,
+     * and if it finds token, it sends token to isValidToken function and returns the result
      *
      * @param String $domain
      * @return bool
      */
     public static function checkDns(String $domain): bool
     {
-        // dns_get_record function creates problem if it sees www. or https://
+        // dns_get_record function creates a problem if it sees www. or https://
         $newDomain = str_replace(["https://", "www."], "", $domain);
 
         $dns_records = dns_get_record($newDomain, DNS_TXT);
 
         foreach ($dns_records as $record) {
             $txtValue = $record["txt"];
-            if (static::isTokenValid($txtValue)) return true;
+            return static::isTokenValid($txtValue);
         }
         return false;
     }
 
     /**
-     * This function reads the file content inside the domain and if it finds token, it sends token to isValidToken function and returns the result
+     * This function reads the file content inside the domain,
+     * and if it finds token, it sends token to isValidToken function and returns the result
      *
      * @param String $domain
      * @param $token
@@ -77,10 +79,11 @@ class DomainService
      * Validates the domain by checking the DNS TXT records and the validation file on the server.
      *
      * @param String $domain
+     * @param null $token
      * @return bool
      */
-    public static function validateDomain(String $domain): bool
+    public static function validateDomain(String $domain, $token = null): bool
     {
-        return static::checkDns($domain) || static::checkHttp($domain);
+        return static::checkDns($domain) || static::checkHttp($domain, $token);
     }
 }
