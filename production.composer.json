@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "plusclouds/leo-v4",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "PlusClouds LEOv4 Platform",
     "keywords": [
         "laravel",
         "framework"
