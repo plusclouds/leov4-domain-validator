@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller as Controller;
-use App\Http\Services\KeyService;
 use App\Http\Requests\KeyRequest;
+use App\Services\KeyService;
 
 class KeyController extends Controller
 {
