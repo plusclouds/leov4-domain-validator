@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 10
       - name: Get tag
         id: tag
-        uses: dawidd6/action-get-tag@v2
+        uses: dawidd6/action-get-tag@v1
         with:
           # Optionally strip `v` prefix
           strip_v: true
